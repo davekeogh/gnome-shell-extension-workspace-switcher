@@ -1,0 +1,6 @@
+{
+    "shell-version": ["3.8"],
+    "uuid": "window-workspace-switcher@davekeogh.shaw.ca",
+    "name": "Window Workspace Switcher",
+    "description": "Switch between windows or workspaces from one extension"
+}
