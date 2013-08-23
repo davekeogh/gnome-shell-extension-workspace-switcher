@@ -1,6 +1,5 @@
 const St = imports.gi.St;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 const PanelMenu = imports.ui.panelMenu;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
@@ -8,10 +7,6 @@ const Shell = imports.gi.Shell;
 const PopupMenu = imports.ui.popupMenu;
 const Panel = imports.ui.panel;
 const Clutter = imports.gi.Clutter;
-
-// TODO: Big (32?) workspace-switcher icon next to workspace names
-//       Different underline style under workspace names
-//       Toggle next to sticky windows?
 
 let indicator;
 
@@ -42,7 +37,6 @@ const WorkspaceChanger = new Lang.Class({
         let tracker = Shell.WindowTracker.get_default();
 
         for (let wks = 0; wks < global.screen.n_workspaces; ++wks) {
-            // construct a list with all windows
             let workspace_name = Meta.prefs_get_workspace_name(wks);
             let metaWorkspace = global.screen.get_workspace_by_index(wks);
             let windows = metaWorkspace.list_windows();
@@ -60,9 +54,6 @@ const WorkspaceChanger = new Lang.Class({
             if (sticky_windows.length && (wks == 0)) {
                 let item = new PopupMenu.PopupMenuItem('All Workspaces');
                 item.actor.add_style_class_name('workspace-title');
-                item.actor.reactive = false;
-                item.actor.can_focus = false;
-
                 this.menu.addMenuItem(item);
 
                 for (let i = 0; i < sticky_windows.length; ++i) {
@@ -95,8 +86,6 @@ const WorkspaceChanger = new Lang.Class({
 
                 if (wks == global.screen.get_active_workspace().index()) {
                     item.setShowDot(true);
-                    item.actor.reactive = false;
-                    item.actor.can_focus = false;
                 }
 
                 else {
@@ -129,6 +118,21 @@ const WorkspaceChanger = new Lang.Class({
                 }
             }
         }
+        
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        
+        let item = new PopupMenu.PopupMenuItem('Settings');
+        
+        item.connect('activate', Lang.bind(this, function() {
+            this.activateSettings();
+        }));
+        
+        this.menu.addMenuItem(item);
+        
+    },
+    
+    activateSettings: function() {
+        return;
     },
 
     updateIndicator: function() {
