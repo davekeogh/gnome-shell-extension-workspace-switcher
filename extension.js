@@ -95,7 +95,6 @@ const WorkspaceChanger = new Lang.Class({
                 }
 
                 this.menu.addMenuItem(item);
-                empty_menu = false;
 
                 for (let i = 0; i < windows.length; ++i) {
                     let metaWindow = windows[i];
@@ -132,7 +131,10 @@ const WorkspaceChanger = new Lang.Class({
     },
     
     activateSettings: function() {
-        return;
+        let appSys = Shell.AppSystem.get_default();
+        let app = appSys.lookup_app('gnome-shell-extension-prefs.desktop');
+        app.launch(global.display.get_current_time_roundtrip(),
+                   ['extension:///window-workspace-switcher@davekeogh.shaw.ca'], -1, null);
     },
 
     updateIndicator: function() {
@@ -184,13 +186,15 @@ const WorkspaceChanger = new Lang.Class({
 });
 
 function init() {
-    indicator = new WorkspaceChanger;
+    return;
 }
 
 function enable() {
+    indicator = new WorkspaceChanger();
     Main.panel.addToStatusArea('workspace-changer', indicator);
 }
 
 function disable() {
     indicator.destroy();
+    indicator = null;
 }
