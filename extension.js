@@ -111,6 +111,8 @@ const WorkspaceChanger = new Lang.Class({
                     item.addActor(item._icon, {
                         align: St.Align.END
                     });
+                    
+                    this.styleLabel(metaWindow, item.label);
 
                     this.menu.addMenuItem(item);
                 }
@@ -129,6 +131,18 @@ const WorkspaceChanger = new Lang.Class({
         
     },
     
+    styleLabel: function(window, label) {
+        if (window.minimized) {
+            label.add_style_class_name('minimized-window-title');
+        }
+        else if (window.has_focus()) {
+            label.add_style_class_name('current-window-title');
+        }
+        else if (window.get_maximized()) {
+            label.add_style_class_name('maximized-window-title');
+        }
+    },
+
     activateSettings: function() {
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app('gnome-shell-extension-prefs.desktop');
