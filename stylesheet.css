@@ -7,3 +7,15 @@
 .workspace-title {
     font-weight: bold;
 }
+
+.minimized-window-title {
+    font-weight: lighter;
+}
+
+.maximized-window-title {
+    font-style: italic;
+}
+
+.current-window-title {
+    font-weight: bold;
+}
