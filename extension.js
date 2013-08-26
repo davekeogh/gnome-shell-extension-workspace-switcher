@@ -16,12 +16,11 @@ const WorkspaceChanger = new Lang.Class({
 
     _init: function() {
         this.parent(0.0, _('Workspace Changer'));
-        this.statusLabel = new St.Label({
-            text: (global.screen.get_active_workspace().index() + 1).toString()
-        });
+        this.statusLabel = new St.Label();
         this.actor.add_actor(this.statusLabel);
         this.statusLabel.add_style_class_name('panel-workspace-indicator');
         this.updateMenu();
+        this.updateIndicator();
 
         this.actor.connect('scroll-event', Lang.bind(this, this.onScrollEvent));
         global.screen.connect('workspace-switched', Lang.bind(this, this.updateIndicator));
@@ -138,7 +137,8 @@ const WorkspaceChanger = new Lang.Class({
     },
 
     updateIndicator: function() {
-        this.statusLabel.set_text((global.screen.get_active_workspace().index() + 1).toString());
+        let label = "{0} / {1}".format((global.screen.get_active_workspace().index() + 1).toString(), global.screen.n_workspaces)
+        this.statusLabel.set_text(label);
     },
 
     activateWindow: function(metaWorkspace, metaWindow) {
@@ -184,6 +184,16 @@ const WorkspaceChanger = new Lang.Class({
         this.activateWorkspace(newIndex);
     }
 });
+
+String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) { 
+        return typeof args[number] != 'undefined'
+            ? args[number]
+            : match;
+        ;
+    });
+};
 
 function init() {
     return;
